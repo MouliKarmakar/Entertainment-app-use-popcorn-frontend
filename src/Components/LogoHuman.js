@@ -1,9 +1,21 @@
 import React from "react";
-export default function Logo() {
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Button, Tooltip } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+
+export default function User() {
+  const navigate = useNavigate();
+  const handleGoToLoginPage = () => {
+    navigate("/");
+  };
   return (
-    <div className="logo">
-      <span role="img">🍿</span>
-      <h1>usePopcorn</h1>
-    </div>
+    <Tooltip title={<Link to="/">LogOut</Link>} trigger="hover">
+      <Button
+        type="dashed"
+        icon={<UserOutlined />}
+        onClick={handleGoToLoginPage}
+      />
+    </Tooltip>
   );
 }
