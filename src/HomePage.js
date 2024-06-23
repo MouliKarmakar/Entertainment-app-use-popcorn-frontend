@@ -33,10 +33,13 @@ export default function HomePage({ userEmail }) {
   const addToWatchList = async (movie) => {
     setWatched((watched) => [...watched, movie]);
     try {
-      const response = await axios.post("http://localhost:8000/watched", {
-        email: userEmail,
-        newMovie: movie,
-      });
+      const response = await axios.post(
+        "https://entertainment-app-use-popcorn-backend.onrender.com/watched",
+        {
+          email: userEmail,
+          newMovie: movie,
+        }
+      );
       alert(response.data.message);
     } catch (error) {
       alert("Failed to add movie to watch list", error);
@@ -46,9 +49,12 @@ export default function HomePage({ userEmail }) {
   const handleDelete = async (title) => {
     setWatched((watched) => watched.filter((movie) => movie.title !== title));
     try {
-      const response = await axios.delete("http://localhost:8000/watched", {
-        data: { email: userEmail, title: title }, // Pass data in the `data` property
-      });
+      const response = await axios.delete(
+        "https://entertainment-app-use-popcorn-backend.onrender.com/watched",
+        {
+          data: { email: userEmail, title: title }, // Pass data in the `data` property
+        }
+      );
       alert(response.data.message);
     } catch (err) {
       alert("Failed to delete movie from watch list", err);
@@ -95,12 +101,15 @@ export default function HomePage({ userEmail }) {
   useEffect(() => {
     const fetchWatchedList = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/watched", {
-          params: { email: userEmail },
-        });
+        const response = await axios.get(
+          "https://entertainment-app-use-popcorn-backend.onrender.com/watched",
+          {
+            params: { email: userEmail },
+          }
+        );
         setWatched(response.data);
       } catch (error) {
-        setError("Failed to fetch watched list");
+        setError("Add new movies to your watch list");
         console.error("Failed to fetch watched list", error);
       }
     };

@@ -16,15 +16,21 @@ export default function LoginPage({ setUserEmail, userEmail }) {
 
       let response;
       if (isSignUp) {
-        response = await axios.post("http://localhost:8000/signup", {
-          email,
-          password,
-        });
+        response = await axios.post(
+          "https://entertainment-app-use-popcorn-backend.onrender.com/signup",
+          {
+            email,
+            password,
+          }
+        );
       } else {
-        response = await axios.post("http://localhost:8000/", {
-          email,
-          password,
-        });
+        response = await axios.post(
+          "https://entertainment-app-use-popcorn-backend.onrender.com/",
+          {
+            email,
+            password,
+          }
+        );
       }
 
       if (response.data.message === "User created successfully") {

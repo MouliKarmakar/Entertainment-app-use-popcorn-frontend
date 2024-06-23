@@ -1,3 +1,4 @@
+import { Flex } from "antd";
 import React, { useState } from "react";
 export default function ListBox({ movies, isLoading, error, onSelect }) {
   const [isOpen1, setIsOpen1] = useState(true);
@@ -6,7 +7,15 @@ export default function ListBox({ movies, isLoading, error, onSelect }) {
     <>
       {isLoading && <p className="loader">Loading...</p>}
 
-      {error && <p className="error">👎{error}</p>}
+      {error &&
+        (error === "Add new movies to your watch list" ? (
+          <Flex vertical={true} className="error">
+            <p>🔍Search for new movies</p>
+            <p>🍿Add new popcorn to your watch list</p>
+          </Flex>
+        ) : (
+          <p className="error">👎{error}</p>
+        ))}
 
       {!isLoading && !error && (
         <div className="box">
