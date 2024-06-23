@@ -4,7 +4,7 @@ import { Button, Flex, Input } from "antd";
 import axios from "axios";
 import debounce from "lodash.debounce";
 
-export default function LoginPage({ setUserEmail }) {
+export default function LoginPage({ setUserEmail, userEmail }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
 
@@ -28,9 +28,11 @@ export default function LoginPage({ setUserEmail }) {
       }
 
       if (response.data.message === "User created successfully") {
-        navigate("/homepage");
+        navigate(`/homepage?email=${userEmail}`);
+        setUserEmail(userEmail);
       } else if (response.data === "Redirecting to the homepage") {
-        navigate("/homepage");
+        navigate(`/homepage?email=${userEmail}`);
+        setUserEmail(userEmail);
       } else {
         alert(isSignUp ? "Email already exists" : "Invalid Credentials");
       }

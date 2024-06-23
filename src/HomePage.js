@@ -14,9 +14,10 @@ const KEY = "94fe3132";
 export default function HomePage({ userEmail }) {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
-  const [watched, setWatched] = useState(() => {
-    return JSON.parse(localStorage.getItem("watched"));
-  });
+  const [watched, setWatched] = useState([]);
+  // () => {
+  //   return JSON.parse(localStorage.getItem("watched"));
+  // }
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
@@ -24,34 +25,35 @@ export default function HomePage({ userEmail }) {
   const handleSelectMovie = (id) => {
     setSelectedId((selectId) => (selectId === id ? null : id));
   };
-  const handleclose = () => {
+
+  const handleClose = () => {
     setSelectedId(null);
   };
 
-  const addToWatchList = (movie) => {
+  const addToWatchList = async (movie) => {
     setWatched((watched) => [...watched, movie]);
-  };
-  const handleDelete = (id) => {
-    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
-  };
-
-  // --------------useEffect using Promise--------
-  /*
-  useEffect(() => {
-    fetch(apiUrl)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setMovies(data.Search);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
+    try {
+      const response = await axios.post("http://localhost:8000/watched", {
+        email: userEmail,
+        newMovie: movie,
       });
-  }, []);
-*/
+      alert(response.data.message);
+    } catch (error) {
+      alert("Failed to add movie to watch list", error);
+    }
+  };
 
-  // -------------- useEffect using async-await---------
+  const handleDelete = async (title) => {
+    setWatched((watched) => watched.filter((movie) => movie.title !== title));
+    try {
+      const response = await axios.delete("http://localhost:8000/watched", {
+        data: { email: userEmail, title: title }, // Pass data in the `data` property
+      });
+      alert(response.data.message);
+    } catch (err) {
+      alert("Failed to delete movie from watch list", err);
+    }
+  };
 
   useEffect(
     function () {
@@ -64,7 +66,7 @@ export default function HomePage({ userEmail }) {
           );
 
           if (!res.ok) {
-            throw new Error("Somthing went wrong with the data fetching");
+            throw new Error("Something went wrong with the data fetching");
           }
           const data = await res.json();
 
@@ -90,6 +92,22 @@ export default function HomePage({ userEmail }) {
     [query]
   );
 
+  useEffect(() => {
+    const fetchWatchedList = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/watched", {
+          params: { email: userEmail },
+        });
+        setWatched(response.data);
+      } catch (error) {
+        setError("Failed to fetch watched list");
+        console.error("Failed to fetch watched list", error);
+      }
+    };
+
+    fetchWatchedList();
+  }, [userEmail]); // Dependency on userEmail only
+
   return (
     <>
       <Navbar>
@@ -108,7 +126,7 @@ export default function HomePage({ userEmail }) {
           watched={watched}
           userEmail={userEmail}
           selectedId={selectedId}
-          onClose={handleclose}
+          onClose={handleClose}
           addToWatchList={addToWatchList}
           handleDelete={handleDelete}
           KEY={KEY}

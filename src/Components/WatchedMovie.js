@@ -20,9 +20,9 @@ export default function WatchedBox({
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
 
-  useEffect(() => {
-    localStorage.setItem("watched", JSON.stringify(watched));
-  }, [watched]);
+  // useEffect(() => {
+  //   localStorage.setItem("watched", JSON.stringify(watched));
+  // }, [watched]);
 
   return (
     <div className="box">
@@ -87,7 +87,7 @@ export default function WatchedBox({
                     </div>
                     <button
                       className="btn-delete"
-                      onClick={() => handleDelete(movie.imdbID)}
+                      onClick={() => handleDelete(movie.title)}
                     >
                       X
                     </button>
