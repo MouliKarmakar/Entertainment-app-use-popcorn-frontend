@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import SelectedMovie from "./SelectedMovieList";
+import axios from "axios";
+import { message } from "antd";
 export default function WatchedBox({
   watched,
+  userEmail,
   selectedId,
   onClose,
   addToWatchList,

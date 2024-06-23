@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import Navbar from "./Components/Navbar";
 import Search from "./Components/SearchBox";
 import Logo from "./Components/Logo";
@@ -10,7 +11,7 @@ import WatchedBox from "./Components/WatchedMovie";
 // const apiUrl = `https://www.omdbapi.com/?apikey=${KEY}&s=interstellar`;
 const KEY = "94fe3132";
 
-export default function HomePage() {
+export default function HomePage({ userEmail }) {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
   const [watched, setWatched] = useState(() => {
@@ -26,6 +27,7 @@ export default function HomePage() {
   const handleclose = () => {
     setSelectedId(null);
   };
+
   const addToWatchList = (movie) => {
     setWatched((watched) => [...watched, movie]);
   };
@@ -104,6 +106,7 @@ export default function HomePage() {
         />
         <WatchedBox
           watched={watched}
+          userEmail={userEmail}
           selectedId={selectedId}
           onClose={handleclose}
           addToWatchList={addToWatchList}

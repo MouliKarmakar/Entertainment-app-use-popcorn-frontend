@@ -84,11 +84,11 @@ body {
   width: 100vw;
   height: 93vh;
 }
-.ligin_box {
+.login_box {
   position: absolute;
-  background: var(--color-primary);
+  background: rgb(214, 214, 241);
   opacity: 0.5;
-  color: var(--color-text);
+  color: rgb(53, 51, 51);
   width: 35%;
   top: 20%;
   min-height: 100px;
